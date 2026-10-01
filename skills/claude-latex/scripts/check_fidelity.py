@@ -63,6 +63,7 @@ def tex_comments(tex):
 
 
 def norm(s):
+    s = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", s)  # re-join words hyphenated across lines
     return re.sub(r"\s+", " ", s.replace("\u2019", "'")).lower()
 
 
