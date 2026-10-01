@@ -1,0 +1,21 @@
+% --- Ruled table with vertical lines (match the source's rules exactly) ---
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  Symbol & Name & Symbol & Name \\ \hline
+  $\alpha$ & Alpha & $\nu$ & Nu \\
+  $\beta$ & Beta & $\xi$ & Xi \\
+  $\gamma,\Gamma$ & Gamma & $o$ & Omicron \\
+  \hline
+\end{tabular}
+\end{center}
+
+% --- Booktabs style (only if the source has no vertical rules) ---
+% \begin{tabular}{lll}\toprule A & B & C\\ \midrule 1 & 2 & 3\\ \bottomrule\end{tabular}
+
+% --- Merged cells ---
+% \multicolumn{2}{|c|}{Header}   \multirow{2}{*}{Cell}
+
+% --- Table longer than a page: longtable with repeated header ---
+% \begin{longtable}{|c|c|}\hline A & B\\\hline\endhead ... \hline\end{longtable}

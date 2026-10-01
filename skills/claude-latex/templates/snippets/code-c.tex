@@ -1,0 +1,26 @@
+% Requires \usepackage[code]{claudelatex}
+% Program text must be CHARACTER-FOR-CHARACTER identical to the source:
+% same names, spacing, braces, comments, blank lines. Never fix or modernise it.
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+void main()
+{
+    int a, b;
+    printf("Enter two numbers: ");
+    scanf("%d %d", &a, &b);
+    printf("Sum = %d\n", a + b);
+}
+\end{lstlisting}
+
+% Program output, only if the source shows it (title text only if the source has it):
+\textbf{Output:}
+\begin{lstlisting}[style=srcoutput]
+Enter two numbers: 3 4
+Sum = 7
+\end{lstlisting}
+
+% Line numbers only if the source numbers lines:
+% \begin{lstlisting}[language=C,numbers=left,numberstyle=\tiny]
+% Other languages: language=C++, Java, Python, SQL, bash, [x86masm]Assembler, ...

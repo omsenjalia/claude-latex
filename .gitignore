@@ -1,0 +1,21 @@
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+*.pdf
+
+# build.py copies the style next to each .tex
+examples/claudelatex.sty
+
+# Python
+__pycache__/
+*.pyc
+
+# scratch / source material (keep user documents out of the repo)
+work/
+sources/

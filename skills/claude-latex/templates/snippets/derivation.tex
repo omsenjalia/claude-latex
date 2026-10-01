@@ -1,0 +1,26 @@
+% --- Displayed formula, numbered exactly as the source numbers it ---
+\begin{equation}
+  2\sin A\sin B=-\cos(A+B)+\cos(A-B) \tag{11}
+\end{equation}
+
+% --- Several formulas on one line, as the source places them ---
+\begin{equation}
+  \tan x=\frac{\sin x}{\cos x},\qquad \cot x=\frac{\cos x}{\sin x},\qquad
+  \sec x=\frac{1}{\cos x},\qquad \csc x=\frac{1}{\sin x} \tag{13}
+\end{equation}
+
+% --- Roman-numbered list of expansions, label on the left like the source ---
+\[
+  \text{(I)}\quad e^{x}=1+x+\frac{x^{2}}{2!}+\frac{x^{3}}{3!}+\cdots
+  =\sum_{n=0}^{\infty}\frac{x^{n}}{n!},\qquad(-\infty,\infty)
+\]
+
+% --- Multi-step derivation aligned at "=", side remarks only if written in the source ---
+\begin{align*}
+  \lim_{x\to 0}\frac{3x^{2}+6\cos x-6}{x^{4}}
+    &=\lim_{x\to 0}\frac{6x-6\sin x}{4x^{3}} &&\text{(0/0 form)}\\
+    &=\lim_{x\to 0}\frac{6-6\cos x}{12x^{2}} &&\text{(0/0 form)}\\
+    &=\lim_{x\to 0}\frac{6\sin x}{24x}\\
+    &=\frac{1}{4}\left(\lim_{x\to 0}\frac{\sin x}{x}\right)
+\end{align*}
+% Box the answer ONLY if the source boxes it:  \[ \boxed{\tfrac14} \]

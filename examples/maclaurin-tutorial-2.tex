@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+\usepackage{claudelatex}
+
+\hypersetup{pdftitle={101BS: Mathematics - I, Tutorial 2 (CO : 1)}}
+\SetFooter{AY: 2026-27 ODD SEMESTER}{\begin{tabular}[t]{@{}r@{}}Dr.\ N C Sonara\\Course Coordinator\end{tabular}}
+\SetHeaderRule{0.4pt}
+\SetFooterRule{0pt}
+
+\begin{document}
+
+\TitleBlock{%
+  {\Large\bfseries Birla Vishvakarma Mahavidyalaya}\\
+  {\large (An Autonomous Engineering Institution)}\\
+  {\large AY: 2026--27 (Odd Semester)}\\
+  {\large\bfseries 101BS: Mathematics - I}\\[1.2em]
+  {\large\bfseries Tutorial 2 (CO : 1)}%
+}
+
+\section*{Maclaurin's Series}
+
+Statement: If $f(x)$ is a given function of $x$ which can be expanded in positive ascending
+powers of $x$ then
+\[
+  f(x)=f(0)+xf'(0)+\frac{x^{2}}{2!}f''(0)+\frac{x^{3}}{3!}f'''(0)+\cdots+\frac{x^{n}}{n!}f^{n}(0)+\cdots
+\]
+The standard expansions so far obtained are given below for ready reference, These
+expansions can be used freely in solution of the examples on Maclaurin's series
+
+\begin{gather*}
+  \text{(I)}\quad e^{x}=1+x+\frac{x^{2}}{2!}+\frac{x^{3}}{3!}+\cdots=\sum_{n=0}^{\infty}\frac{x^{n}}{n!},\qquad(-\infty,\infty)\\[0.8em]
+  \text{(II)}\quad \sin x=x-\frac{x^{3}}{3!}+\frac{x^{5}}{5!}-\frac{x^{7}}{7!}+\cdots=\sum_{n=0}^{\infty}(-1)^{n}\frac{x^{2n+1}}{(2n+1)!},\qquad(-\infty,\infty)\\[0.8em]
+  \text{(III)}\quad \sinh x=x+\frac{x^{3}}{3!}+\frac{x^{5}}{5!}+\frac{x^{7}}{7!}+\cdots=\sum_{n=0}^{\infty}\frac{x^{2n+1}}{(2n+1)!},\qquad(-\infty,\infty)\\[0.8em]
+  \text{(IV)}\quad \cos x=1-\frac{x^{2}}{2!}+\frac{x^{4}}{4!}-\frac{x^{6}}{6!}+\cdots=\sum_{n=0}^{\infty}(-1)^{n}\frac{x^{2n}}{(2n)!},\qquad(-\infty,\infty)\\[0.8em]
+  \text{(V)}\quad \cosh x=1+\frac{x^{2}}{2!}+\frac{x^{4}}{4!}+\frac{x^{6}}{6!}+\cdots=\sum_{n=0}^{\infty}\frac{x^{2n}}{(2n)!},\qquad(-\infty,\infty)\\[0.8em]
+  \text{(VI)}\quad \log(1+x)=x-\frac{x^{2}}{2}+\frac{x^{3}}{3}-\frac{x^{4}}{4}+\cdots=\sum_{n=1}^{\infty}(-1)^{n+1}\frac{x^{n}}{n},
+\end{gather*}
+
+\end{document}

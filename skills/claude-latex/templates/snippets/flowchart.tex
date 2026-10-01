@@ -1,0 +1,20 @@
+% Requires \usepackage[flowcharts]{claudelatex}
+% Same boxes, shapes, texts, arrow directions and branch labels as the source.
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.1cm]
+  \node[fc/terminal] (start) {Start};
+  \node[fc/io, below=of start] (in) {Read $n$};
+  \node[fc/decision, below=of in] (dec) {$n \% 2 == 0$?};
+  \node[fc/process, below left=1cm and 0.6cm of dec] (even) {Print ``Even''};
+  \node[fc/process, below right=1cm and 0.6cm of dec] (odd) {Print ``Odd''};
+  \node[fc/terminal, below=2.6cm of dec] (stop) {Stop};
+
+  \draw[fc/arrow] (start) -- (in);
+  \draw[fc/arrow] (in) -- (dec);
+  \draw[fc/arrow] (dec) -| node[pos=0.25,above]{Yes} (even);
+  \draw[fc/arrow] (dec) -| node[pos=0.25,above]{No} (odd);
+  \draw[fc/arrow] (even) |- (stop);
+  \draw[fc/arrow] (odd) |- (stop);
+\end{tikzpicture}
+\end{center}

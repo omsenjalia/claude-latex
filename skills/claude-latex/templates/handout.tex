@@ -1,0 +1,28 @@
+% handout.tex — replicate a typed institutional handout / tutorial / question paper.
+% Replace every <...> with the source's own text. Delete any line the source does not have.
+% Keep claudelatex.sty in the same folder.
+\documentclass[12pt]{article}
+\usepackage{claudelatex}          % add options as needed: [code,circuits,plots,flowcharts,chem]
+
+\hypersetup{pdftitle={<source title>}}
+
+% Footer exactly as printed in the source: left text / page number / right text.
+\SetFooter{<FOOTER LEFT, e.g. AY2026--27 ODD SEMESTER>}{<FOOTER RIGHT, e.g. Dr.\ N C Sonara\\Course Coordinator>}
+% \SetHeaderRule{0.4pt}            % only if the source has a rule at the top of the page
+
+\begin{document}
+
+\TitleBlock{%
+  {\Large\bfseries <Institution name>}\\
+  {\large (<Institution sub-line>)}\\
+  {\large <Academic year line>}\\
+  {\large\bfseries <Course code: Course name>}\\
+  {\large\bfseries <Tutorial / Assignment name>}\\
+  {\large\bfseries <DOCUMENT TITLE AS PRINTED>}%
+}
+
+\section*{<First heading as printed>}
+
+<Content, block by block, in source order. See snippets/.>
+
+\end{document}

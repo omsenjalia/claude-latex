@@ -1,0 +1,50 @@
+\documentclass[12pt]{article}
+\usepackage{claudelatex}
+
+\hypersetup{pdftitle={Limits and Indeterminate Forms}}
+\pagestyle{plain}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries Limits and Indeterminate Forms}
+\end{center}
+
+If
+\[
+  \lim_{x\to a}f(x)=l \qquad\text{and}\qquad \lim_{x\to a}g(x)=m\neq 0,
+\]
+then
+\[
+  \lim_{x\to a}\frac{f(x)}{g(x)}=\frac{\lim\limits_{x\to a}f(x)}{\lim\limits_{x\to a}g(x)}.
+\]
+Now consider the situation when the limit of the numerator and the limit of the
+denominator are both zero. Then we get the form $\dfrac{0}{0}$.
+So, we cannot find the limit by the usual division rule of limits. This form is called an
+\emph{indeterminate form}.
+
+Some other indeterminate forms are
+\[
+  \frac{\infty}{\infty},\qquad 0\times\infty,\qquad \infty-\infty,\qquad 1^{\infty},\qquad
+  0^{0},\qquad \infty^{0},\qquad \frac{\infty}{0}.
+\]
+
+\section*{L'Hospital's Rule}
+
+Let $f(x)$ and $g(x)$ be two functions of $x$ which can be expanded by Taylor's series and
+$f(a)=0=g(a)$. Then
+\[
+  \lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)},
+\]
+provided the latter limit exists.
+
+Evaluate $\displaystyle\lim_{x\to 0}\frac{3x^{2}+6\cos x-6}{x^{4}}$
+\begin{align*}
+  \lim_{x\to 0}\frac{3x^{2}+6\cos x-6}{x^{4}}
+    &=\lim_{x\to 0}\frac{6x-6\sin x}{4x^{3}} &&\text{(0/0 form)}\\
+    &=\lim_{x\to 0}\frac{6-6\cos x}{12x^{2}} &&\text{(0/0 form)}\\
+    &=\lim_{x\to 0}\frac{6\sin x}{24x}\\
+    &=\frac{1}{4}\left(\lim_{x\to 0}\frac{\sin x}{x}\right)=\frac{1}{4}
+\end{align*}
+
+\end{document}

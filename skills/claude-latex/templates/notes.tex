@@ -1,0 +1,30 @@
+% notes.tex — clean typeset copy of handwritten / scanned notes.
+% Only the author's own words, symbols and figures. No running header, no colophon,
+% no "reconstructed" label, no invented numbering, no date.
+\documentclass[12pt]{article}
+\usepackage{claudelatex}          % add options as needed: [code,circuits,plots,flowcharts,chem]
+
+\hypersetup{pdftitle={<author's own title, or leave empty>}}
+\pagestyle{plain}                 % bare centred page number only
+
+\begin{document}
+
+% Only if the first page carries a title:
+\begin{center}
+  {\Large\bfseries <Title exactly as written>}
+\end{center}
+
+% Headings the author wrote (underlined/boxed/coloured in the notes) become \section*.
+\section*{<Heading as written>}
+
+<Author's text as written.>
+
+% A worked problem: the author's own label (Ex., Q., 1), (i), …) — or none.
+<Ex.>\; Evaluate \(\displaystyle \lim_{x\to 0}\frac{<...>}{<...>}\)
+\begin{align*}
+  \lim_{x\to 0}\frac{<...>}{<...>}
+    &= \lim_{x\to 0}\frac{<...>}{<...>} && \text{<side remark only if the author wrote one>}\\
+    &= <...>
+\end{align*}
+
+\end{document}

@@ -1,0 +1,20 @@
+% Requires \usepackage[circuits]{claudelatex}
+% Redraw with the SAME components, values, labels, node names, polarities and topology.
+% If any part is unreadable, use figure-from-source.tex (crop) instead of guessing.
+
+\begin{center}
+\begin{circuitikz}[american]
+  \draw (0,0)
+    to[V, v=$V_s$] (0,3)          % source with the polarity shown in the source
+    to[R, l=$R_1$] (3,3)
+    to[C, l=$C$] (3,0)
+    -- (0,0);
+  \draw (0,0) node[ground]{};
+\end{circuitikz}
+\end{center}
+
+% Common parts: R, C, L, V (voltage src), I (current src), battery1, D (diode), led,
+% short, open, switch (nos/ncs), lamp, ammeter/voltmeter (rmeter with t=A / t=V),
+% npn, pnp, nmos, pmos (node[npn]), op amp (node[op amp]),
+% logic gates: node[and port], [or port], [not port], [nand port], [nor port], [xor port].
+% Labels: l=..., v=... (voltage), i=... (current arrow), a=... (annotation).

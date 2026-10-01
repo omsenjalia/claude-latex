@@ -1,0 +1,14 @@
+% For photos, screenshots, complex/artistic figures, or anything that cannot be redrawn
+% exactly. Extract from the source first:
+%   python scripts/pdftool.py images SOURCE.pdf assets/
+%   python scripts/pdftool.py crop   SOURCE.pdf 3 72 300 520 610 assets/p3-fig.png --dpi 300
+% Caption ONLY if the source has a caption (copy it verbatim; keep its numbering).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{assets/p3-fig.png}
+  % \caption*{<caption exactly as in the source>}   % \caption* = no auto "Figure 1:"
+\end{figure}
+
+% Inline without float behaviour:
+% \begin{center}\includegraphics[width=0.6\textwidth]{assets/p3-fig.png}\end{center}
