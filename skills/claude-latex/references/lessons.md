@@ -37,6 +37,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L12 [active] For handwritten notes, drop per-source-page page breaks and use Needspace before each labelled example so content flows without half-empty pages
+- **area:** layout
+- **trigger:** self
+- **why:** One typeset page per scanned page left many sparse pages; flowing with kept-together blocks gave a compact, tidy document.
+- **apply:** Remove clearpage between source pages; add needspace before each example/section heading; redraw tikz trees with node anchors so lines do not hit labels.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
