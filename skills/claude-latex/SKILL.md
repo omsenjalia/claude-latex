@@ -75,7 +75,46 @@ If the source contains a mathematical mistake, keep the source's version.
 
 ---
 
+## SELF-LEARNING LOOP (every run)
+
+This skill improves itself across sessions through `references/lessons.md`, its memory,
+managed with `scripts/learn.py`.
+
+**Before you start:** run `python scripts/learn.py list` and apply every active lesson.
+They are rules that aren't in the main docs yet, and they override defaults.
+
+**While working, notice learning signals:**
+- **correction:** the user asks you to change something you produced (spacing, layout,
+  naming, wording, a missing element). This is the strongest signal; always record it.
+- **check:** `check_fidelity.py`, the build, or your visual check caught a problem.
+- **self:** you hit a non-obvious problem and found the fix (a TeX error, a tool quirk, a
+  layout trick that worked).
+
+**After delivering:** record each new general lesson:
+```bash
+python scripts/learn.py add --area layout --trigger correction \
+  --lesson "One-sentence imperative rule" \
+  --why "What went wrong or what the user asked for" \
+  --apply "Exactly what to do next time"
+```
+- `add` recognises a lesson that's already recorded and raises its `seen` count instead of
+  duplicating it.
+- When a lesson reaches **seen ≥ 3**, or the user states it as a standing preference, promote
+  it: write it into this file, the right reference, or the script that should enforce it
+  automatically. Then run `python scripts/learn.py promote L<n> --to <file>`, and
+  `python install.py` from the repo if you changed scripts.
+- Lessons are saved to the installed skill and committed locally in the source repo
+  (found through `.source_repo`). **Never push** unless the user asks.
+- Never record document contents, personal data, names or paths from the user's files.
+  Record only the reusable rule.
+- Tell the user in one line what was learned (e.g. "Learned: keep pattern tables centred
+  (L9)"). Don't put it in the PDF.
+
+---
+
 ## WORKFLOW FOR CLAUDE
+
+0. **Load lessons:** `python scripts/learn.py list`. Apply them.
 
 1. **Inspect the source** with `scripts/pdftool.py` (needs `pip install pymupdf`):
    ```bash
@@ -133,6 +172,10 @@ If the source contains a mathematical mistake, keep the source's version.
 7. **Deliver:** the `.pdf` (and the `.tex` + any extracted image assets). The chat
    reply may list illegible/ambiguous spots and choices made — the PDF may not.
 
+8. **Learn:** record every correction, failed check or hard-won fix with
+   `scripts/learn.py add`, and promote lessons that are ready (see SELF-LEARNING LOOP).
+   Do this again whenever the user corrects a delivered file.
+
 ---
 
 ## SOLUTIONS / PRACTICAL FILES (user asks for programs, outputs, flowcharts)
@@ -187,6 +230,7 @@ references/content-types.md      ← per-content-type transcription rules
 references/layout-replication.md ← how to mirror headers, footers, title blocks, numbering
 references/prompt-template.md    ← fill-in brief Claude writes for itself before typesetting
 references/checklist.md          ← self-verification checklist (mandatory)
+references/lessons.md            ← the skill's memory: active + promoted lessons (read first)
 references/practical-files.md    ← solutions to programming practicals: page-filling layout,
                                    Turbo C style, real outputs, flowchart pages
 templates/claudelatex.sty        ← shared preamble (packages, footer/title helpers, code style)
@@ -197,6 +241,7 @@ templates/snippets/*.tex         ← ready blocks: derivation, table, code-c, ci
 scripts/pdftool.py               ← info / render / text / images / crop for source PDFs
 scripts/build.py                 ← compile with whatever TeX engine is installed
 scripts/check_fidelity.py        ← blocks AI remarks; diffs vocabulary against the source
+scripts/learn.py                 ← list / add / seen / promote / stats lessons (self-learning)
 scripts/practicals.py            ← JSON spec → one-program-per-page lab file (+ flowchart pages)
 scripts/flowgen.py               ← block list (io/process/loop/if/ifelse) → TikZ flowchart
 scripts/flowchart_examples.py    ← hand-written flowcharts for cases flowgen can't express (break)

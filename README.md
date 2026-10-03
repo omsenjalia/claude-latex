@@ -66,6 +66,25 @@ notes"* and attach the file. The skill:
 If part of the source is illegible or ambiguous, Claude says so in the chat. Nothing about
 it is written into the PDF.
 
+## Self-learning
+
+The skill keeps a memory in `skills/claude-latex/references/lessons.md`:
+
+1. **Before each run**, Claude reads the active lessons (`scripts/learn.py list`) and applies them.
+2. **After each run**, Claude records anything new with `learn.py add`: your corrections
+   ("give proper spacing", "use the whole page"), checks that failed, and non-obvious fixes.
+   A repeated lesson raises a `seen` count instead of creating a duplicate.
+3. **Once a lesson is seen 3 times** (or you state it as a standing preference), Claude
+   promotes it into the main rules or the scripts that enforce it, and marks it promoted.
+
+Lessons are written to the installed skill and committed locally in this repo. `install.py`
+records the repo path in the installed copy as `.source_repo`. Nothing is pushed unless you
+ask. To review what it has learned:
+
+```bash
+python skills/claude-latex/scripts/learn.py stats
+```
+
 ## Check any PDF for AI remarks
 
 ```bash
