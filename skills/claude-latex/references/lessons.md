@@ -28,6 +28,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L11 [active] Render sources into a short relative folder in the working directory; pymupdf cannot save to Windows 8.3 short temp paths
+- **area:** workflow
+- **trigger:** self
+- **why:** pdftool render failed writing PNGs to a PROGRA~1-style short path.
+- **apply:** mkdir src in the cwd and render there; zoom-crop unclear spots with pdftool crop before deciding a reading.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
