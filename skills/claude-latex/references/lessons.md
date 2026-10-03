@@ -64,6 +64,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L16 [active] Bring in ideas from older note-making templates only when they keep the PDF source-only
+- **area:** workflow
+- **trigger:** self
+- **why:** The old image-prompt template mixed useful rules (OCR repair, series numbering, pseudocode) with additions (enrichment, GATE tags, practice sheets) that break the source-only rule
+- **apply:** Adopt formatting/repair/numbering rules directly; offer content-adding features only as explicit opt-in extras (references/optional-extras.md)
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
