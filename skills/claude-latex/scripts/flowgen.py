@@ -15,7 +15,8 @@
     ])
     open("fc/x.tex", "w").write(tex)
 
-Start and Stop are added automatically. Layout rules (see references/practical-files.md):
+Start and Stop are added automatically; for a user-defined function's own chart pass e.g.
+start="fact(n)", stop="Return" (practicals.py can show it beside main()). Layout rules (see references/practical-files.md):
 - main path straight down the centre; "Yes" on the downward arrow
 - each loop: back-edge on its own left column, "No" exit on its own right column;
   nested loops use columns further in, so lines never cross
@@ -26,7 +27,7 @@ Start and Stop are added automatically. Layout rules (see references/practical-f
 Use with \\usepackage[flowcharts]{claudelatex}; practicals.py scales the result to the page.
 """
 
-INNER_COL = 3.7      # |x| of the innermost loop's columns (cm)
+INNER_COL = 4.1      # |x| of the innermost loop's columns (cm)
 COL_STEP = 1.35      # extra |x| per enclosing loop level (cm)
 COLUMN_GAP = 2.6     # space between split columns (cm)
 
@@ -143,10 +144,18 @@ class _Flow:
         else:
             style, text = other
             alt = self._new()
-            self.nodes.append(r"\node[fc/%s, right=12mm of v%d] (%s) {%s};"
-                              % (style, first_yes, alt, text))
-            self.edges.append(r"\draw[fc/arrow] (%s.east) -| node[above,pos=0.25]{No} (%s.north);"
-                              % (dec, alt))
+            if _has_loop(yes):
+                # the Yes branch has loop columns: put the else box level with the decision,
+                # to the right of every loop column, so no lines cross
+                x = self.col(depth - 1 if depth > 0 else 0) + 3.4
+                self.nodes.append(r"\node[fc/%s] (%s) at ($(%s)+(%.2f,0)$) {%s};"
+                                  % (style, alt, dec, x, text))
+                self.edges.append(r"\draw[fc/arrow] (%s.east) -- node[above]{No} (%s.west);" % (dec, alt))
+            else:
+                self.nodes.append(r"\node[fc/%s, right=12mm of v%d] (%s) {%s};"
+                                  % (style, first_yes, alt, text))
+                self.edges.append(r"\draw[fc/arrow] (%s.east) -| node[above,pos=0.25]{No} (%s.north);"
+                                  % (dec, alt))
             self.edges.append(r"\draw (%s.south) |- (%s);" % (alt, j))
 
     def connector(self):
@@ -161,10 +170,11 @@ class _Flow:
         self.prev, self.prev_is_coord, self.gap = name, False, None
         self._straight_from(name)
 
-    def render(self, blocks):
-        self.start = self.node("terminal", "Start")
+    def render(self, blocks, start="Start", stop="Stop"):
+        self.start = self.node("terminal", start)
         self.items(blocks, 0)
-        self.node("terminal", "Stop")
+        if stop:
+            self.node("terminal", stop)
         return self.nodes, self.edges
 
 
@@ -185,7 +195,11 @@ def _auto_split(blocks, limit):
     return blocks[:i] + [("connector",)] + blocks[i:]
 
 
-def flowchart(blocks, compact=None, split_over=None):
+def _has_loop(blocks):
+    return any(b[0] == "loop" or (b[0] in ("if", "ifelse") and _has_loop(b[2])) for b in blocks)
+
+
+def flowchart(blocks, compact=None, split_over=None, start="Start", stop="Stop"):
     """Return a tikzpicture string for the given blocks.
 
     On a portrait A4 page one tall column almost always scales better than two side-by-side
@@ -200,11 +214,11 @@ def flowchart(blocks, compact=None, split_over=None):
     if compact is None:
         compact = per_col > 16
     f = _Flow(max(depth, 1))
-    nodes, edges = f.render(blocks)
+    nodes, edges = f.render(blocks, start, stop)
     opts = [r"node distance=%s" % ("4.5mm" if compact else "7mm"),
-            r"every node/.style={font=\large}",
-            r"fc/process/.append style={minimum width=4.6cm, text width=5.2cm}",
-            r"fc/io/.append style={minimum width=4.4cm, text width=4.8cm}",
+            r"every node/.style={font=\large, execute at begin node=\hyphenpenalty 10000\relax}",
+            r"fc/process/.append style={minimum width=4.6cm, text width=6cm}",
+            r"fc/io/.append style={minimum width=4.4cm, text width=5.4cm}",
             r"fc/connector/.style={circle, draw, minimum size=9mm, inner sep=0pt}"]
     if compact:
         opts.append(r"fc/decision/.append style={minimum height=1.05cm, aspect=2.8}")

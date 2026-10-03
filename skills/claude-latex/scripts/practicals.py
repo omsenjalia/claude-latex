@@ -30,7 +30,12 @@ SPEC.json:
 }
 
 Optional flowchart page per part: add "flowchart": "fc/4_1.tex" (a bare tikzpicture using
-the fc/* styles from claudelatex.sty) to a part; it is scaled to fill the page. Add a
+the fc/* styles from claudelatex.sty) to a part; it is scaled to fill the page. For programs
+with user-defined functions give a list, drawn side by side with titles:
+  "flowchart": [{"title": "main()", "file": "fc/8_1_main.tex"},
+                {"title": "oddEven(n)", "file": "fc/8_1_fn.tex"}]
+Programs too long to share a page with their output at >= 9.5 pt get the output on the
+next page ("<number> Output:"). Add a
 top-level "flowchart_note": "..." to print a note at the bottom of every flowchart page
 (only when the user asks for one).
 
@@ -48,6 +53,8 @@ TEXT_HEIGHT = 680.0   # pt, A4 with claudelatex.sty margins (2.5cm top, 2.8cm bo
 TEXT_WIDTH = 455.0    # pt, A4 with 2.5cm side margins
 TT_CHAR = 0.525       # cmtt glyph width in em
 STATEMENT_CHARS_PER_LINE = 80
+SPLIT_BELOW_PT = 8.6  # if code+output would need the minimum font, output goes to the next page
+MAX_CHART_SCALE = 1.5  # flowcharts fill the page but are never enlarged beyond this
 
 
 def est_statement_height(text, extra, first, lines_hint=None):
@@ -107,8 +114,15 @@ def main():
             heading = spec.get("heading") if first_page else None
             stmt_h = est_statement_height(p["statement"], part.get("extra"), k == 0,
                                           p.get("statement_lines"))
-            f, b, gap = fit(len(code.split("\n")), len(out.split("\n")),
-                            max(len(l.expandtabs(4)) for l in lines), stmt_h, heading)
+            longest = max(len(l.expandtabs(4)) for l in lines)
+            n_code, n_out = len(code.split("\n")), len(out.split("\n"))
+            f, b, gap = fit(n_code, n_out, longest, stmt_h, heading)
+            # Long program: keep the code on its page and move the output to the next page
+            # instead of shrinking everything below a comfortable reading size.
+            split_out = f < SPLIT_BELOW_PT and n_out > 2
+            if split_out:
+                f, b, gap = fit(n_code, 0, longest, stmt_h, heading)
+                fo, bo, gapo = fit(0, n_out, longest, 0.0, None)
 
             if not first_page:
                 o.append(r"\clearpage")
@@ -127,22 +141,45 @@ def main():
             o += [r"\par\vspace{%.1fpt}" % gap,
                   r"\noindent\textbf{%s}" % lab["solution"],
                   r"\begin{lstlisting}[language=%s,basicstyle=%s]" % (part.get("language", "C"), style),
-                  code, r"\end{lstlisting}",
-                  r"\vspace{%.1fpt}" % gap,
-                  r"\noindent\textbf{%s}" % lab["output"],
-                  r"\begin{lstlisting}[style=srcoutput,frame=single,framesep=6pt,basicstyle=%s]" % style,
+                  code, r"\end{lstlisting}"]
+            if split_out:
+                style = r"\fontsize{%s}{%s}\selectfont\ttfamily" % (fo, bo)
+                o += [r"\clearpage", r"\noindent\textbf{%s%s %s}" % (p["number"], label, lab["output"]),
+                      r"\par\vspace{6pt}"]
+            else:
+                o += [r"\vspace{%.1fpt}" % gap, r"\noindent\textbf{%s}" % lab["output"]]
+            o += [r"\begin{lstlisting}[style=srcoutput,frame=single,framesep=6pt,basicstyle=%s]" % style,
                   out, r"\end{lstlisting}", ""]
             if part.get("flowchart"):
-                fc = os.path.relpath(os.path.join(base, part["flowchart"]),
-                                     os.path.dirname(os.path.abspath(out_path))).replace("\\", "/")
+                rel = lambda pth: os.path.relpath(os.path.join(base, pth), os.path.dirname(
+                    os.path.abspath(out_path))).replace("\\", "/")
+                charts = part["flowchart"]
                 o += [r"\clearpage",
                       r"\noindent\textbf{%s%s %s}" % (p["number"], label, lab["flowchart"]),
                       r"\par\vspace{12pt}",
-                      r"\begin{center}",
-                      r"\begin{adjustbox}{width=\textwidth,totalheight=0.84\textheight,keepaspectratio}",
-                      r"\input{%s}" % fc,
-                      r"\end{adjustbox}",
-                      r"\end{center}",
+                      r"\begin{center}"]
+                if isinstance(charts, str):
+                    # fill the page, but never blow a small chart up beyond 1.5x
+                    o += [r"\sbox0{\input{%s}}%%" % rel(charts),
+                          r"\pgfmathsetmacro\clSa{min(%s, \textwidth/\wd0, 0.84*\textheight/(\ht0+\dp0))}%%"
+                          % MAX_CHART_SCALE,
+                          r"\scalebox{\clSa}{\usebox0}"]
+                else:
+                    # several charts (main() + functions): TeX measures side-by-side and stacked
+                    # layouts and keeps whichever can be drawn larger on the page
+                    cells = [r"\begin{tabular}[t]{@{}c@{}}\textbf{\Large %s}\\[8pt]\input{%s}\end{tabular}"
+                             % (c["title"], rel(c["file"])) for c in charts]
+                    side = r"\begin{tabular}{@{}%s@{}}" % (r"c@{\hspace{1.5cm}}" * (len(cells) - 1) + "c") \
+                        + " &\n".join(cells) + r"\end{tabular}"
+                    stack = r"\begin{tabular}{@{}c@{}}" + r" \\[1cm]" "\n".join(cells) + r"\end{tabular}"
+                    o += [r"\sbox0{%s}%%" % side,
+                          r"\sbox2{%s}%%" % stack,
+                          r"\pgfmathsetmacro\clSa{min(%s, \textwidth/\wd0, 0.84*\textheight/(\ht0+\dp0))}%%"
+                          % MAX_CHART_SCALE,
+                          r"\pgfmathsetmacro\clSb{min(%s, \textwidth/\wd2, 0.84*\textheight/(\ht2+\dp2))}%%"
+                          % MAX_CHART_SCALE,
+                          r"\ifdim\clSa pt>\clSb pt\scalebox{\clSa}{\usebox0}\else\scalebox{\clSb}{\usebox2}\fi"]
+                o += [r"\end{center}",
                       r"\vfill"]
                 if fc_note:
                     o.append(r"\noindent{\small\itshape %s}" % fc_note)

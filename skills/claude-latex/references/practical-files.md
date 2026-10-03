@@ -18,9 +18,11 @@ Output:                                      ← real program output, with typed
 
 - **One program per page.** Each program gets a page of its own, and its size and spacing
   are chosen to fill that page. Use `scripts/practicals.py`, which picks the code font
-  (9–12 pt) and line spacing (1.2–1.6×) from the line count and longest line, then spreads
-  the leftover height as gaps. Never leave a short program at the top of an empty page in a
-  tiny font, and never let a program or its output break across pages.
+  (8.5–12 pt) and line spacing (1.2–1.6×) from the line count and longest line, then
+  spreads the leftover height as gaps. Never leave a short program at the top of an empty
+  page in a tiny font, and never let a program or its output break across pages.
+- Very long programs, where code plus output would need less than 8.6 pt, keep the code
+  on its own page and put the output on the next page under `<number> Output:`.
 - Multi-part practicals (4.9 (i), (ii)) get **one page per part**. The first page shows the
   full statement. Later pages show `number (part)` and that part's formula.
 - The first page carries the source's section heading (e.g. `4  Looping Statements`).
@@ -95,7 +97,29 @@ a note about the correction to the PDF.
   The loops that are the point of the practical (the search, the sort, the row sums) must
   be drawn in full.
 - Don't split a chart into connector-joined columns unless both halves are similar in
-  height. On portrait A4, one tall column almost always comes out larger.
+  height. On portrait A4, one tall column almost always comes out larger. A good case is
+  two independent query loops one after the other (e.g. hotel system 9.3): put
+  `("connector",)` between them.
+- **User-defined functions and recursion:** draw one chart for `main()` (the call shown as
+  a process box, e.g. `Call oddEven(num)` or `sum = sumOfN(n)`) and one chart per function,
+  started with `start="fact(n)"` and ended with `stop="Return"`, `"Return s"` or `"End"`.
+  For a recursive function, use an `ifelse` for the base case and the recursive case
+  (`Return 1` / `Return n × fact(n − 1)`). In the spec, give `"flowchart"` as a list of
+  `{"title", "file"}`. `practicals.py` measures side-by-side and stacked layouts and keeps
+  whichever comes out larger.
+- Flowcharts fill the page but are never scaled beyond 1.5×, so tiny charts don't turn
+  into giant boxes. Node text never hyphenates; boxes are 6 cm wide so formulas don't wrap
+  mid-word.
+- Programs whose loops use `break` (prime check, string palindrome) can usually be written
+  with the condition in the loop instead (`while (i < len / 2 && flag == 1)`). That keeps
+  the program simple and lets `flowgen` draw it.
+- File programs: write and read fixed or user-named files, create any input file (e.g.
+  `source.txt`) before the test run, and save it with the sources.
+- Pointer addresses are printed with `%u` (Turbo C convention). The output shows the
+  addresses from the real run, which differ from machine to machine.
+- If the statement leaves a formula undefined (e.g. gross/net salary), use a common
+  textbook convention, make the program print each component (`DA (40%)`, `HRA (20%)`,
+  `PF (12%)`), and tell the user in chat which convention you used.
 - TeX gotcha: in node text, write a straight quote as `{\textquotesingle}a{\textquotesingle}`.
   Without the braces, `\textquotesinglea` is read as one unknown command.
 - Flowchart steps must match the program exactly: same variables, same conditions, same
