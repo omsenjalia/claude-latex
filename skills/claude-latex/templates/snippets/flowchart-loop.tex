@@ -1,0 +1,28 @@
+% Requires \usepackage[flowcharts]{claudelatex}. Loop pattern used for practical files:
+% back-edge on the left column L, loop exit "No" on the right column R. See references/practical-files.md.
+\begin{tikzpicture}[node distance=7mm, every node/.style={font=\large},
+  fc/process/.append style={minimum width=4.6cm, text width=5.6cm},
+  fc/io/.append style={minimum width=4.6cm, text width=5cm},
+  fc/decision/.append style={inner sep=1pt, aspect=2.2, minimum width=3.4cm, minimum height=1.5cm}]
+\coordinate (L) at (-5.0,0);
+\coordinate (R) at (5.0,0);
+
+\node[fc/terminal] (n0) {Start};
+\node[fc/io, below=of n0] (p0) {Read n};
+\node[fc/process, below=of p0] (p1) {sum = 0, i = 1};
+\node[fc/decision, below=of p1] (dec) {i $\le$ n ?};
+\node[fc/process, below=of dec] (b0) {Print i\\ sum = sum + i};
+\node[fc/process, below=of b0] (b1) {i = i + 1};
+\node[fc/process, below=14mm of b1] (q0) {avg = sum / n};
+\node[fc/io, below=of q0] (q1) {Print sum, avg};
+\node[fc/terminal, below=of q1] (end) {Stop};
+\draw[fc/arrow] (n0) -- (p0);
+\draw[fc/arrow] (p0) -- (p1);
+\draw[fc/arrow] (p1) -- (dec);
+\draw[fc/arrow] (dec) -- node[right]{Yes} (b0);
+\draw[fc/arrow] (b0) -- (b1);
+\draw[fc/arrow] (b1.south) -- ++(0,-5mm) -| (L |- dec) -- (dec.west);
+\draw[fc/arrow] (dec.east) -- node[above,pos=0.4]{No} (R |- dec) |- (q0.east);
+\draw[fc/arrow] (q0) -- (q1);
+\draw[fc/arrow] (q1) -- (end);
+\end{tikzpicture}

@@ -73,7 +73,10 @@ def main():
     ap.add_argument("--pdf")
     ap.add_argument("--source", help="source PDF (typed, with text layer)")
     ap.add_argument("--source-text", help="plain-text transcription of the source")
+    ap.add_argument("--allow", action="append", default=[],
+                    help="phrase the user explicitly asked for (e.g. --allow 'note:'); repeatable")
     a = ap.parse_args()
+    allowed = [norm(x) for x in a.allow]
 
     tex = open(a.tex, encoding="utf-8", errors="replace").read()
     src = ""
@@ -98,6 +101,8 @@ def main():
             for m in re.finditer(pat, t):
                 if src_n and re.search(pat, src_n):
                     continue  # the source itself says it
+                if any(m.group(0) in al or al in m.group(0) for al in allowed):
+                    continue  # explicitly requested by the user
                 ctx = t[max(0, m.start() - 50):m.end() + 50]
                 print(f"  [{where}] '{m.group(0)}'  …{ctx}…")
                 bad += 1

@@ -135,6 +135,24 @@ If the source contains a mathematical mistake, keep the source's version.
 
 ---
 
+## SOLUTIONS / PRACTICAL FILES (user asks for programs, outputs, flowcharts)
+
+When the user gives programming practicals and asks for **solutions**, follow
+`references/practical-files.md`. In short:
+- Format: `[number] statement` → `Solution:` (program) → `Output:` (real run).
+- **One program per page, sized to fill the page** with `scripts/practicals.py`. Code and
+  output never split across pages.
+- Use the compiler style the user names (e.g. Turbo C: `conio.h`, `void main()`, `clrscr()`,
+  `getch()`). Always use proper code spacing (`for (i = 1; i <= n; i++)`, `sum = sum + i`).
+- **Compile and run every program**, and paste the real output with the typed input shown.
+- If a statement has a typo, report it and ask. Fix it (statement and program) only once
+  the user agrees.
+- If asked, add flowcharts on a separate page after each program, scaled to fill the page.
+  Add notes (e.g. "for learning purposes only") only when the user asks, then run the
+  checker with `--allow`.
+
+---
+
 ## SOURCE-TYPE PLAYBOOK (summary — details in `references/content-types.md`)
 
 | Source content            | How to reproduce                                                                 |
@@ -168,6 +186,8 @@ references/content-types.md      ← per-content-type transcription rules
 references/layout-replication.md ← how to mirror headers, footers, title blocks, numbering
 references/prompt-template.md    ← fill-in brief Claude writes for itself before typesetting
 references/checklist.md          ← self-verification checklist (mandatory)
+references/practical-files.md    ← solutions to programming practicals: page-filling layout,
+                                   Turbo C style, real outputs, flowchart pages
 templates/claudelatex.sty        ← shared preamble (packages, footer/title helpers, code style)
 templates/handout.tex            ← typed institutional handout layout
 templates/notes.tex              ← clean notes layout for handwritten/scanned sources
@@ -176,4 +196,5 @@ templates/snippets/*.tex         ← ready blocks: derivation, table, code-c, ci
 scripts/pdftool.py               ← info / render / text / images / crop for source PDFs
 scripts/build.py                 ← compile with whatever TeX engine is installed
 scripts/check_fidelity.py        ← blocks AI remarks; diffs vocabulary against the source
+scripts/practicals.py            ← JSON spec → one-program-per-page lab file (+ flowchart pages)
 ```

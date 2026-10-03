@@ -17,6 +17,9 @@ Run every item. Fix failures yourself — do not present a PDF with a known fail
       answers that the source doesn't contain.
 - [ ] No invented numbering (Definition 1.1, Example 1.2, section numbers, equation numbers).
 - [ ] No `%` comments in the .tex expressing doubts or describing the process.
+- [ ] No absolute paths in the .tex (`\input`, `\includegraphics`). Use paths relative to the
+      .tex, because machine paths can leak user/tool names.
+- [ ] Notes or extra text appear only when the user asked for them, worded as they asked.
 - [ ] PDF metadata (title/author/creator/producer) contains no AI/tool names.
 
 ## C. Nothing lost
