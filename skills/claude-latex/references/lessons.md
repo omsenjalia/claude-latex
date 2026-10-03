@@ -55,6 +55,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L14 [active] Save the finished PDF to a named Desktop folder with the sources in a sources subfolder, and re-copy after every later change
+- **area:** workflow
+- **trigger:** self
+- **why:** User asked for the PDF in a Desktop folder; later edits had to be copied over again.
+- **apply:** After the last rebuild, copy the PDF and the tex files to the folder and list it to confirm.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
