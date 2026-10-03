@@ -64,6 +64,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L15 [active] Use the colour theme by default: coloured titles, yellow for important points, orange for definitions
+- **area:** layout
+- **trigger:** correction
+- **why:** User asked for colourful LaTeX output instead of black and white, applied to all templates
+- **apply:** Load claudelatex with [color]; mark definitions/important/formulas/answers per references/color-theme.md; drop it only when the user asks for black and white
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
