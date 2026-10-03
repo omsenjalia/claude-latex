@@ -12,6 +12,7 @@ SPEC.json:
     {
       "number": "4.1",
       "statement": "Write a C program to ...",       // LaTeX, copied from the source
+      "statement_lines": 6,                           // optional: height of a table/pattern statement
       "parts": [                                      // one page per part
         {"label": null, "code": "src/4_1.c", "language": "C",
          "output": "Enter the value of N: 10\\n..."}  // or "output_file": "out/4_1.txt"
@@ -49,7 +50,11 @@ TT_CHAR = 0.525       # cmtt glyph width in em
 STATEMENT_CHARS_PER_LINE = 80
 
 
-def est_statement_height(text, extra, first):
+def est_statement_height(text, extra, first, lines_hint=None):
+    """lines_hint: rendered statement height in text lines (set "statement_lines" in the
+    spec for tables/patterns/figures, whose LaTeX length says nothing about their height)."""
+    if lines_hint and first:
+        return lines_hint * 16.0 + (34.0 if extra else 0.0)
     lines = max(1, -(-len(text) // STATEMENT_CHARS_PER_LINE)) if first else 1
     h = lines * 15.0
     if extra:
@@ -100,7 +105,8 @@ def main():
             out = out.strip("\n")
             lines = code.split("\n") + out.split("\n")
             heading = spec.get("heading") if first_page else None
-            stmt_h = est_statement_height(p["statement"], part.get("extra"), k == 0)
+            stmt_h = est_statement_height(p["statement"], part.get("extra"), k == 0,
+                                          p.get("statement_lines"))
             f, b, gap = fit(len(code.split("\n")), len(out.split("\n")),
                             max(len(l.expandtabs(4)) for l in lines), stmt_h, heading)
 

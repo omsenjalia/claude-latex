@@ -148,8 +148,9 @@ When the user gives programming practicals and asks for **solutions**, follow
 - If a statement has a typo, report it and ask. Fix it (statement and program) only once
   the user agrees.
 - If asked, add flowcharts on a separate page after each program, scaled to fill the page.
-  Add notes (e.g. "for learning purposes only") only when the user asks, then run the
-  checker with `--allow`.
+  Build them with `scripts/flowgen.py` (loops, nested loops, if/else). Add notes (e.g. "for
+  learning purposes only") only when the user asks, then run the checker with `--allow`.
+- Save as `Practical <n> - <heading>.pdf`, with the sources in `sources/practical-<n>/`.
 
 ---
 
@@ -197,4 +198,6 @@ scripts/pdftool.py               ← info / render / text / images / crop for so
 scripts/build.py                 ← compile with whatever TeX engine is installed
 scripts/check_fidelity.py        ← blocks AI remarks; diffs vocabulary against the source
 scripts/practicals.py            ← JSON spec → one-program-per-page lab file (+ flowchart pages)
+scripts/flowgen.py               ← block list (io/process/loop/if/ifelse) → TikZ flowchart
+scripts/flowchart_examples.py    ← hand-written flowcharts for cases flowgen can't express (break)
 ```

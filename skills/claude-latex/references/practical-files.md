@@ -84,16 +84,48 @@ a note about the correction to the PDF.
     lines never cross.
   - Side branches (`flag = 0`, `Print "not prime"`) sit beside the main column and rejoin
     through one junction point above the next shared node.
-- Starting points: `templates/snippets/flowchart-loop.tex` (one loop) and
-  `scripts/flowchart_examples.py`. Its `loop_chart()` helper generates simple loops, and
-  it also has worked charts for a nested decision, a `break`, and an if/else after a loop.
+- **Use `scripts/flowgen.py` first.** It builds the whole chart from a block list (`io`,
+  `process`, `loop` with any nesting, `if`, `ifelse`, optional `connector`) and applies all
+  the layout rules above automatically, including column placement per nesting level and
+  compact spacing for long charts. Hand-written TikZ is only for shapes it can't express,
+  such as a `break` out of a loop. For those, see `scripts/flowchart_examples.py` (4.5) and
+  `templates/snippets/flowchart-loop.tex`.
+- Abstraction is allowed when it keeps the chart readable: a plain input or print loop can
+  be one I/O box (`Read a[0] … a[n − 1]`, `Read matrix a[3][3]`, `Print sorted array`).
+  The loops that are the point of the practical (the search, the sort, the row sums) must
+  be drawn in full.
+- Don't split a chart into connector-joined columns unless both halves are similar in
+  height. On portrait A4, one tall column almost always comes out larger.
+- TeX gotcha: in node text, write a straight quote as `{\textquotesingle}a{\textquotesingle}`.
+  Without the braces, `\textquotesinglea` is read as one unknown command.
 - Flowchart steps must match the program exactly: same variables, same conditions, same
   order.
 - **Note text:** add a note only if the user asks, worded as they asked, e.g.
   `"flowchart_note": "Note: This flowchart is for learning purposes only."`. Then run the
   checker with `--allow "note:"`.
 
-## 6. Build steps
+## 6. Statements that are tables or patterns
+
+Pattern practicals ("print the following pattern") show the pattern itself as the statement.
+Typeset it as a `tabular` with one cell per character, so right-aligned and centred
+patterns keep their shape, and copy any side text like `where n=4`. Set `"statement_lines"`
+in the spec to the pattern's height in lines, so `practicals.py` reserves the right space.
+Keep the source's numbering exactly (`5.1)` with its parenthesis, `6.1` without). Test each
+pattern program with the n the source shows, and check that every row of the real output
+matches the source pattern.
+
+## 7. Saving and naming
+
+- One PDF per practical (topic). When the user wants them saved, name each file
+  `Practical <n> - <heading>.pdf` (e.g. `Practical 4 - Looping Statements.pdf`).
+  Windows doesn't allow `:` in file names, so use ` - ` and tell the user.
+  If the source has no short heading (e.g. "Write a C program to print following Pattern"),
+  use a short noun for it (`Patterns`) in the file name only, never inside the PDF.
+- Keep the sources next to the PDFs in `sources/practical-<n>/`: `.tex`, `claudelatex.sty`,
+  `spec.json`, `src/*.c`, `fc/*.tex`. Then the file can be rebuilt after edits.
+- Never leave deliverables only in a session's temporary folder. Offer a permanent folder.
+
+## 8. Build steps
 
 ```bash
 python scripts/practicals.py spec.json out.tex      # see the docstring for the spec format
