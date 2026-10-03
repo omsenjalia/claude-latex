@@ -10,7 +10,14 @@ documents. Record only the general, reusable lesson.
 
 ## Active lessons
 
-_none_
+### L9 [active] Confirm every edit really applied (and rebuild succeeded) before sending the PDF
+- **area:** workflow
+- **trigger:** self
+- **why:** A scripted text replace failed on an assert, and the unchanged PDF was sent as if it were fixed.
+- **apply:** After each fix, check the edit output, rebuild, grep the PDF text for the changed string, then send.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
 
 ## Promoted (now part of the rules)
 
