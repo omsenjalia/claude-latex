@@ -46,6 +46,15 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
+### L13 [active] When the user allows it, solve unsolved examples in a clearly separate final section and leave the user's own pages exactly as written
+- **area:** workflow
+- **trigger:** correction
+- **why:** User asked for unsolved examples to be solved after the faithful transcription was done; their own working contained arithmetic slips.
+- **apply:** Keep the transcription faithful, append a separate solutions section, recompute every answer independently, and list in chat each place where the new answer differs from the user's working.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ## Promoted (now part of the rules)
 
 ### L1 [promoted] Never add AI remarks, 'reconstructed' labels, colophons or comments about 'the source' to the PDF
