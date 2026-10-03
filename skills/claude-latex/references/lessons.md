@@ -24,7 +24,7 @@ documents. Record only the general, reusable lesson.
 - **trigger:** self
 - **why:** sed turned usetikzlibrary into Setikzlibrary and inline python raised unicode-escape errors on LaTeX backslashes.
 - **apply:** Use Edit for single changes; for bulk changes Write a .py file with r-strings and run it.
-- **seen:** 1
+- **seen:** 2
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 
