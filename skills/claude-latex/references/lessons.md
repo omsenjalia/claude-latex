@@ -10,15 +10,6 @@ documents. Record only the general, reusable lesson.
 
 ## Active lessons
 
-### L10 [active] Do text edits to .tex with the Edit tool or a saved script using raw strings; never sed or inline python with backslashes
-- **area:** build
-- **trigger:** self
-- **why:** sed turned usetikzlibrary into Setikzlibrary and inline python raised unicode-escape errors on LaTeX backslashes.
-- **apply:** Use Edit for single changes; for bulk changes Write a .py file with r-strings and run it.
-- **seen:** 1
-- **first:** 2026-10-03
-- **last:** 2026-10-03
-
 ### L11 [active] Render sources into a short relative folder in the working directory; pymupdf cannot save to Windows 8.3 short temp paths
 - **area:** workflow
 - **trigger:** self
@@ -164,3 +155,13 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 - **promoted_to:** references/color-theme.md
+
+### L10 [promoted] Do text edits to .tex with the Edit tool or a saved script using raw strings; never sed or inline python with backslashes
+- **area:** build
+- **trigger:** self
+- **why:** sed turned usetikzlibrary into Setikzlibrary and inline python raised unicode-escape errors on LaTeX backslashes.
+- **apply:** Use Edit for single changes; for bulk changes Write a .py file with r-strings and run it.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+- **promoted_to:** references/optional-extras.md
