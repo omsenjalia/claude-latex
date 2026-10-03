@@ -10,15 +10,6 @@ documents. Record only the general, reusable lesson.
 
 ## Active lessons
 
-### L9 [active] Confirm every edit really applied (and rebuild succeeded) before sending the PDF
-- **area:** workflow
-- **trigger:** self
-- **why:** A scripted text replace failed on an assert, and the unchanged PDF was sent as if it were fixed.
-- **apply:** After each fix, check the edit output, rebuild, grep the PDF text for the changed string, then send.
-- **seen:** 1
-- **first:** 2026-10-03
-- **last:** 2026-10-03
-
 ### L10 [active] Do text edits to .tex with the Edit tool or a saved script using raw strings; never sed or inline python with backslashes
 - **area:** build
 - **trigger:** self
@@ -154,3 +145,13 @@ documents. Record only the general, reusable lesson.
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 - **promoted_to:** references/checklist.md
+
+### L9 [promoted] Confirm every edit really applied (and rebuild succeeded) before sending the PDF
+- **area:** workflow
+- **trigger:** self
+- **why:** A scripted text replace failed on an assert, and the unchanged PDF was sent as if it were fixed.
+- **apply:** After each fix, check the edit output, rebuild, grep the PDF text for the changed string, then send.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+- **promoted_to:** references/color-theme.md
