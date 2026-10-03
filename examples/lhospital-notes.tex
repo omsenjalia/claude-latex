@@ -1,14 +1,12 @@
 \documentclass[12pt]{article}
-\usepackage{claudelatex}
+\usepackage[color]{claudelatex}
 
 \hypersetup{pdftitle={Limits and Indeterminate Forms}}
 \pagestyle{plain}
 
 \begin{document}
 
-\begin{center}
-  {\Large\bfseries Limits and Indeterminate Forms}
-\end{center}
+\TitleBlock{{\Large\bfseries Limits and Indeterminate Forms}}
 
 If
 \[
@@ -23,8 +21,8 @@ denominator are both zero. Then we get the form
 \[
   \frac{0}{0}.
 \]
-So, we cannot find the limit by the usual division rule of limits. This form is called an
-\emph{indeterminate form}.
+So, we cannot find the limit by the usual division rule of limits. \definition{This form is
+called an \keyterm{indeterminate form}.}
 
 Some other indeterminate forms are
 \[
@@ -36,10 +34,12 @@ Some other indeterminate forms are
 
 Let $f(x)$ and $g(x)$ be two functions of $x$ which can be expanded by Taylor's series and
 $f(a)=0=g(a)$. Then
+\begin{formulabox}
 \[
   \lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)},
 \]
-provided the latter limit exists.
+\end{formulabox}
+\important{provided the latter limit exists.}
 
 Evaluate $\displaystyle\lim_{x\to 0}\frac{3x^{2}+6\cos x-6}{x^{4}}$
 \begin{align*}

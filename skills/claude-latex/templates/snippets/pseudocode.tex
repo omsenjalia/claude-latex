@@ -1,0 +1,16 @@
+% Requires \usepackage[code]{claudelatex}
+% Pseudocode (algorithm logic, not compilable code): no frame, plain ink, bold control
+% keywords, indentation exactly as in the source. Number lines ONLY if the source does
+% (add numbers=left,numberstyle=\small). Keywords must be written as in the source
+% (e.g. IF / WHILE in caps); extend morekeywords in claudelatex.sty if it uses others.
+
+\begin{lstlisting}[style=pseudocode]
+PROCEDURE LinearSearch(A, n, key)
+    FOR i = 1 TO n DO
+        IF A[i] = key THEN
+            RETURN i
+        ENDIF
+    ENDFOR
+    RETURN -1
+END
+\end{lstlisting}

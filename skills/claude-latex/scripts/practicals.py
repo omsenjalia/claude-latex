@@ -8,6 +8,8 @@ SPEC.json:
   "heading": "4\\quad Looping Statements",          // optional, printed on the first page
   "pdftitle": "Looping Statements",                 // optional
   "labels": {"solution": "Solution:", "output": "Output:"},   // optional
+  "color": true,                                    // colour theme (default on); false = black & white
+  "start_page": 10,                                 // optional: continue numbering from a series
   "practicals": [
     {
       "number": "4.1",
@@ -94,14 +96,17 @@ def main():
     has_fc = any(part.get("flowchart") for p in spec["practicals"] for part in p["parts"])
     fc_note = spec.get("flowchart_note")
 
+    pkg_opts = ["code"] + (["flowcharts"] if has_fc else []) + (["color"] if spec.get("color", True) else [])
     o = [r"\documentclass[12pt]{article}",
-         r"\usepackage[code%s]{claudelatex}" % (",flowcharts" if has_fc else ""),
+         r"\usepackage[%s]{claudelatex}" % ",".join(pkg_opts),
          r"\usepackage{adjustbox}" if has_fc else "",
          r"\hypersetup{pdftitle={%s}}" % spec.get("pdftitle", ""),
          r"\pagestyle{plain}",
          r"\setlength{\parskip}{0pt}",
          r"\lstset{frame=single,framesep=6pt,aboveskip=4pt,belowskip=0pt}",
          "", r"\begin{document}", ""]
+    if spec.get("start_page"):          # continue page numbers across a series of files
+        o.append(r"\setcounter{page}{%d}" % int(spec["start_page"]))
     first_page = True
     for p in spec["practicals"]:
         for k, part in enumerate(p["parts"]):
@@ -130,24 +135,24 @@ def main():
                 o += [r"\section*{%s}" % heading, ""]
             label = (" " + part["label"]) if part.get("label") else ""
             if k == 0:
-                o.append(r"\noindent\textbf{%s} %s" % (p["number"], p["statement"]))
+                o.append(r"\noindent\clLabel{%s} %s" % (p["number"], p["statement"]))
             else:
-                o.append(r"\noindent\textbf{%s%s}" % (p["number"], label))
+                o.append(r"\noindent\clLabel{%s%s}" % (p["number"], label))
             if part.get("extra"):
                 o.append(part["extra"])
             if k == 0 and label:
-                o += [r"\par\vspace{%.1fpt}" % (gap / 2), r"\noindent\textbf{%s}" % part["label"].strip()]
+                o += [r"\par\vspace{%.1fpt}" % (gap / 2), r"\noindent\clLabel{%s}" % part["label"].strip()]
             style = r"\fontsize{%s}{%s}\selectfont\ttfamily" % (f, b)
             o += [r"\par\vspace{%.1fpt}" % gap,
-                  r"\noindent\textbf{%s}" % lab["solution"],
+                  r"\noindent\clLabel{%s}" % lab["solution"],
                   r"\begin{lstlisting}[language=%s,basicstyle=%s]" % (part.get("language", "C"), style),
                   code, r"\end{lstlisting}"]
             if split_out:
                 style = r"\fontsize{%s}{%s}\selectfont\ttfamily" % (fo, bo)
-                o += [r"\clearpage", r"\noindent\textbf{%s%s %s}" % (p["number"], label, lab["output"]),
+                o += [r"\clearpage", r"\noindent\clLabel{%s%s %s}" % (p["number"], label, lab["output"]),
                       r"\par\vspace{6pt}"]
             else:
-                o += [r"\vspace{%.1fpt}" % gap, r"\noindent\textbf{%s}" % lab["output"]]
+                o += [r"\vspace{%.1fpt}" % gap, r"\noindent\clLabel{%s}" % lab["output"]]
             o += [r"\begin{lstlisting}[style=srcoutput,frame=single,framesep=6pt,basicstyle=%s]" % style,
                   out, r"\end{lstlisting}", ""]
             if part.get("flowchart"):
@@ -155,7 +160,7 @@ def main():
                     os.path.abspath(out_path))).replace("\\", "/")
                 charts = part["flowchart"]
                 o += [r"\clearpage",
-                      r"\noindent\textbf{%s%s %s}" % (p["number"], label, lab["flowchart"]),
+                      r"\noindent\clLabel{%s%s %s}" % (p["number"], label, lab["flowchart"]),
                       r"\par\vspace{12pt}",
                       r"\begin{center}"]
                 if isinstance(charts, str):

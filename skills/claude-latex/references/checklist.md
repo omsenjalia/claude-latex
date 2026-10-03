@@ -38,12 +38,18 @@ Run every item. Fix failures yourself — do not present a PDF with a known fail
 - [ ] Code: `&`, `*`, `%d`, `\n`, `;`, `{}`, `<>`, indentation.
 - [ ] Circuit: component values, units, polarities, diode/transistor orientation.
 
-## E. Typography
+## E. Colour (when COLOR is on)
+- [ ] Highlights mean the same thing everywhere (yellow = important, orange = definition,
+      blue box = formula, green box = answer); at most 3–4 highlights per page.
+- [ ] No box or highlight carries a title or label the source doesn't print.
+- [ ] Everything stays readable in greyscale (light fills only).
+
+## F. Typography
 - [ ] Nothing overflows the margins or is clipped; no overfull lines visible on the page.
 - [ ] Display maths centred, multi-step derivations aligned at `=`.
 - [ ] Fonts: Computer/Latin Modern throughout (unless xelatex was required).
 - [ ] Page size A4 (unless source differs).
 
-## F. Delivery
+## G. Delivery
 - [ ] Deliver PDF (+ .tex + assets).
 - [ ] Chat reply lists doubts/illegible spots (or says there were none). The PDF does not.

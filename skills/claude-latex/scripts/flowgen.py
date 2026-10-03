@@ -121,25 +121,25 @@ class _Flow:
         if init:
             self.node("process", init)
         dec = self.node("decision", cond)
-        self.incoming = [r"\draw[%(arrow)s] (" + dec + r") -- node[right]{Yes} (%(t)s);"]
+        self.incoming = [r"\draw[%(arrow)s] (" + dec + r") -- node[right]{@YES@} (%(t)s);"]
         self.items(body, depth + 1)
         x = self.col(depth)
         src = "(%s)" % self.prev if self.prev_is_coord else "(%s.south)" % self.prev
         self.edges.append(r"\draw[fc/arrow] %s -- ++(0,-4mm) -| (%.2f,0 |- %s) -- (%s.west);"
                           % (src, self.xoff - x, dec, dec))
-        self.incoming = [r"\draw[%(arrow)s] (" + dec + r".east) -- node[above,pos=0.3]{No} ("
+        self.incoming = [r"\draw[%(arrow)s] (" + dec + r".east) -- node[above,pos=0.3]{@NO@} ("
                          + "%.2f,0 |- %s" % (self.xoff + x, dec) + r") |- (%(te)s);"]
         self.gap = "below=11mm of"
 
     def if_(self, cond, yes, other, depth):
         dec = self.node("decision", cond)
-        self.incoming = [r"\draw[%(arrow)s] (" + dec + r") -- node[right]{Yes} (%(t)s);"]
+        self.incoming = [r"\draw[%(arrow)s] (" + dec + r") -- node[right]{@YES@} (%(t)s);"]
         first_yes = self.k + 1
         self.items(yes, depth)
         j = self.junction()
         if other is None:
             x = self.xoff + (self.col(depth - 1) - 0.9 if depth > 0 else INNER_COL)
-            self.edges.append(r"\draw (%s.east) -- node[above,pos=0.3]{No} (%.2f,0 |- %s) |- (%s);"
+            self.edges.append(r"\draw (%s.east) -- node[above,pos=0.3]{@NO@} (%.2f,0 |- %s) |- (%s);"
                               % (dec, x, dec, j))
         else:
             style, text = other
@@ -150,11 +150,11 @@ class _Flow:
                 x = self.col(depth - 1 if depth > 0 else 0) + 3.4
                 self.nodes.append(r"\node[fc/%s] (%s) at ($(%s)+(%.2f,0)$) {%s};"
                                   % (style, alt, dec, x, text))
-                self.edges.append(r"\draw[fc/arrow] (%s.east) -- node[above]{No} (%s.west);" % (dec, alt))
+                self.edges.append(r"\draw[fc/arrow] (%s.east) -- node[above]{@NO@} (%s.west);" % (dec, alt))
             else:
                 self.nodes.append(r"\node[fc/%s, right=12mm of v%d] (%s) {%s};"
                                   % (style, first_yes, alt, text))
-                self.edges.append(r"\draw[fc/arrow] (%s.east) -| node[above,pos=0.25]{No} (%s.north);"
+                self.edges.append(r"\draw[fc/arrow] (%s.east) -| node[above,pos=0.25]{@NO@} (%s.north);"
                                   % (dec, alt))
             self.edges.append(r"\draw (%s.south) |- (%s);" % (alt, j))
 
@@ -199,13 +199,15 @@ def _has_loop(blocks):
     return any(b[0] == "loop" or (b[0] in ("if", "ifelse") and _has_loop(b[2])) for b in blocks)
 
 
-def flowchart(blocks, compact=None, split_over=None, start="Start", stop="Stop"):
+def flowchart(blocks, compact=None, split_over=None, start="Start", stop="Stop",
+              branch=("Yes", "No")):
     """Return a tikzpicture string for the given blocks.
 
     On a portrait A4 page one tall column almost always scales better than two side-by-side
     columns, so splitting is off by default. Pass split_over=N to split charts with more
     than N nodes into two connector-joined columns, or place ("connector",) yourself when
-    two halves are similar in height."""
+    two halves are similar in height. `branch` sets the decision labels to match the
+    source, e.g. ("True", "False") or ("T", "F")."""
     if split_over:
         blocks = _auto_split(blocks, split_over)
     depth = _depth(blocks)
@@ -219,11 +221,12 @@ def flowchart(blocks, compact=None, split_over=None, start="Start", stop="Stop")
             r"every node/.style={font=\large, execute at begin node=\hyphenpenalty 10000\relax}",
             r"fc/process/.append style={minimum width=4.6cm, text width=6cm}",
             r"fc/io/.append style={minimum width=4.4cm, text width=5.4cm}",
-            r"fc/connector/.style={circle, draw, minimum size=9mm, inner sep=0pt}"]
+            r"fc/connector/.append style={circle, draw, minimum size=9mm, inner sep=0pt}"]
     if compact:
         opts.append(r"fc/decision/.append style={minimum height=1.05cm, aspect=2.8}")
-    return ("\\begin{tikzpicture}[" + ",\n  ".join(opts) + "]\n"
-            + "\n".join(nodes) + "\n" + "\n".join(edges) + "\n\\end{tikzpicture}\n")
+    tex = ("\\begin{tikzpicture}[" + ",\n  ".join(opts) + "]\n"
+           + "\n".join(nodes) + "\n" + "\n".join(edges) + "\n\\end{tikzpicture}\n")
+    return tex.replace("@YES@", branch[0]).replace("@NO@", branch[1])
 
 
 if __name__ == "__main__":

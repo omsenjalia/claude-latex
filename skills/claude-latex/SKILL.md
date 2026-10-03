@@ -24,6 +24,13 @@ PAPER:           a4paper     # never US Letter unless the source is Letter
 ENGINE:          pdflatex    # xelatex/lualatex only if the source needs Unicode scripts/fonts
 FONT:            Computer Modern (pdflatex default) — matches the reference handouts
 ONE_FILE_PER_SOURCE: true    # one .tex/.pdf per source file unless the user asks to merge
+COLOR:           on          # colour theme for every template: \usepackage[color]{claudelatex}
+                             #  coloured titles/headings, yellow = important, orange = definitions,
+                             #  blue formula boxes, green answers, coloured code + flowcharts.
+                             #  "black and white" from the user -> drop the option
+                             #  (references/color-theme.md)
+PAGE_NUMBERS:    continuous  # a series of lecture files continues numbering (scripts/series.py);
+                             #  bare numerals only, never "X of Y"
 ```
 
 ---
@@ -126,6 +133,10 @@ python scripts/learn.py add --area layout --trigger correction \
      scrambles fractions, limits, superscripts and tables (e.g. `x2` for x², `∞\n∑\nn=0`).
      The image is the ground truth; the text layer is only a spelling aid.
    - Images (.png/.jpg) of pages: read them directly.
+   - OCR'd Markdown/text sources: apply `references/ocr-reconstruction.md` (repair corrupted
+     symbols/structure from context; every repair is reported in chat, never in the PDF).
+   - Part of a series (Lecture 2 of a topic…)? `python scripts/series.py get "<topic>"` for the
+     page number to continue from and the options used last time; `series.py set` after.
    - Classify each page: typed / handwritten / scanned / slide; and list its content
      blocks (headings, prose, equations, tables, code, figures, circuits, graphs).
 
@@ -146,6 +157,12 @@ python scripts/learn.py add --area layout --trigger correction \
    math → `derivation.tex`, tables → `table.tex`, C/other code → `code-c.tex`,
    circuits → `circuit.tex`, graphs → `graph.tex`, flowcharts → `flowchart.tex`,
    photos/irreproducible figures → `figure-from-source.tex`, question lists → `questions.tex`.
+
+3a. **Colour (CONFIG `COLOR: on`):** headings, code, tables and flowcharts colour themselves.
+   Mark the source's definitions with `\definition{}`/`defbox`, its key statements with
+   `\important{}`/`keybox`, key formulas with `formulabox`, final answers with `answerbox`.
+   Do this sparingly, with the same meaning everywhere and never with added words
+   (`references/color-theme.md`).
 
 4. **Replicate layout faithfully** (`references/layout-replication.md`): same headings and
    their wording/capitalisation, same numbering scheme ((1), (I), Q-1, 1., a)…), same
@@ -231,17 +248,22 @@ references/layout-replication.md ← how to mirror headers, footers, title block
 references/prompt-template.md    ← fill-in brief Claude writes for itself before typesetting
 references/checklist.md          ← self-verification checklist (mandatory)
 references/lessons.md            ← the skill's memory: active + promoted lessons (read first)
+references/color-theme.md        ← colour theme: what is coloured, highlight meanings, rules
+references/ocr-reconstruction.md ← repairing OCR'd / text-extracted sources
+references/optional-extras.md    ← opt-in only: cover page, formula/syntax sheet, series numbering
 references/practical-files.md    ← solutions to programming practicals: page-filling layout,
                                    Turbo C style, real outputs, flowchart pages
 templates/claudelatex.sty        ← shared preamble (packages, footer/title helpers, code style)
 templates/handout.tex            ← typed institutional handout layout
 templates/notes.tex              ← clean notes layout for handwritten/scanned sources
-templates/snippets/*.tex         ← ready blocks: derivation, table, code-c, circuit, graph,
-                                   flowchart, figure-from-source, questions
+templates/snippets/*.tex         ← ready blocks: derivation, table, code-c, pseudocode, circuit,
+                                   graph, flowchart, flowchart-loop, figure-from-source,
+                                   questions; opt-in: cover, quickref
 scripts/pdftool.py               ← info / render / text / images / crop for source PDFs
 scripts/build.py                 ← compile with whatever TeX engine is installed
 scripts/check_fidelity.py        ← blocks AI remarks; diffs vocabulary against the source
 scripts/learn.py                 ← list / add / seen / promote / stats lessons (self-learning)
+scripts/series.py                ← per-series state (next page number, options); local only
 scripts/practicals.py            ← JSON spec → one-program-per-page lab file (+ flowchart pages)
 scripts/flowgen.py               ← block list (io/process/loop/if/ifelse) → TikZ flowchart
 scripts/flowchart_examples.py    ← hand-written flowcharts for cases flowgen can't express (break)

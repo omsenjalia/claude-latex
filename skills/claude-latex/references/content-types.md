@@ -49,6 +49,30 @@ Snippets live in `../templates/snippets/`.
 - Handwritten code: transcribe what is written; ambiguous characters (`l`/`1`, `O`/`0`,
   `;`/`:`) resolved by language syntax, and listed in the chat reply if still doubtful.
 
+## Pseudocode (algorithm logic, not compilable code)
+- Preserve: every line, keyword, capitalisation and **indentation depth** (indentation is
+  how pseudocode shows nesting, so make each level a clear step), and line numbers only if
+  the source numbers its lines.
+- Typeset: `snippets/pseudocode.tex` (`style=pseudocode`): no frame, normal ink, bold
+  control keywords (IF/THEN/ELSE, WHILE, FOR, REPEAT/UNTIL, RETURN, PROCEDURE/FUNCTION...).
+  No language syntax colouring. It's read like a derivation, not run like code.
+- If the source uses `algorithmic`-style layout with `←` arrows, keep `$\gets$`.
+
+## Exam / provenance labels
+- Labels the source attaches to a question or example, like `(Winter 2012)`, `GTU Dec-19`,
+  `[GATE 2015]` or `(5 marks)`, are content. Copy them exactly, in the same place, with the
+  same wording and format. Never standardise, add or remove them, and never add exam-
+  relevance tags of your own.
+
+## UI / UX / design sources
+- Screenshots, mockups, colour swatches and real UI images: crop them from the source
+  (`figure-from-source.tex`).
+- Schematic wireframes, user-flow diagrams and component anatomy drawn in the source:
+  redraw with `tikz` (rectangles, pill-shaped buttons, lines for text, arrows) only if it
+  can be reproduced exactly; otherwise crop. Keep every annotation label verbatim.
+- Typography scales and palettes: reproduce the listed values exactly (`#2D6CDF`,
+  `H1 — 32px Bold`) as a table if the source tabulates them.
+
 ## Circuit diagrams
 - Preserve: every component (R, C, L, sources, diodes, BJTs/MOSFETs, op-amps, gates,
   switches, ground, meters), its label and value (`R_1 = 10\,\text{k}\Omega`), node
@@ -69,7 +93,11 @@ Snippets live in `../templates/snippets/`.
 ## Flowcharts / block diagrams / trees / state machines
 - Preserve: every box, its shape (terminal, process, decision, I/O), text, arrow
   direction, branch labels (`Yes`/`No`, `T`/`F`), layout direction.
-- Typeset: `tikz` with the `flowchart` styles from `snippets/flowchart.tex`;
+- Branch labels exactly as the source writes them (`Yes/No`, `True/False`, `T/F`);
+  `flowgen.flowchart(..., branch=("True", "False"))`. No step numbers inside shapes unless
+  the source has them. Long labels wrap inside the shape, never overflow.
+- Typeset: `scripts/flowgen.py` for program-style charts; otherwise `tikz` with the
+  `flowchart` styles from `snippets/flowchart.tex`;
   automata via `tikz` `automata` library; trees via `forest` or `tikz` trees.
 
 ## Images, photos, screenshots, hand sketches that can't be redrawn exactly

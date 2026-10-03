@@ -66,6 +66,20 @@ notes"* and attach the file. The skill:
 If part of the source is illegible or ambiguous, Claude says so in the chat. Nothing about
 it is written into the PDF.
 
+## Colour
+
+Every template is colourful by default (`\usepackage[color]{claudelatex}`):
+
+- **Always coloured:** titles and headings, syntax-highlighted code, output boxes, table
+  header rows, and flowchart shapes filled by type.
+- **Highlight commands:** yellow `\important{}` for key points, orange `\definition{}` for
+  definitions, blue `formulabox` for key formulas, green `answerbox` for final answers.
+- **Rules:** colour is styling only. It never adds words, and each colour keeps the same
+  meaning everywhere.
+- **Black and white:** drop the `color` option. The same `.tex` then prints plain.
+
+See `skills/claude-latex/references/color-theme.md`.
+
 ## Self-learning
 
 The skill keeps a memory in `skills/claude-latex/references/lessons.md`:

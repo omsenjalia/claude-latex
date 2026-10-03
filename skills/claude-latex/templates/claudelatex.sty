@@ -9,6 +9,13 @@
 \newif\ifcl@plots     \cl@plotsfalse
 \newif\ifcl@flow      \cl@flowfalse
 \newif\ifcl@chem      \cl@chemfalse
+\newif\ifcl@codecolor \cl@codecolorfalse
+\newif\ifcl@color     \cl@colorfalse
+\DeclareOption{codecolor}{\cl@codecolortrue\cl@codetrue}
+%% color: the colour theme for ALL templates (coloured titles/headings, yellow highlights for
+%% important points, orange for definitions, tinted formula/answer boxes, coloured code,
+%% coloured table headers, filled flowchart shapes). Without it everything renders in black.
+\DeclareOption{color}{\cl@colortrue\cl@codecolortrue}
 \DeclareOption{code}{\cl@codetrue}
 \DeclareOption{circuits}{\cl@circuitstrue}
 \DeclareOption{plots}{\cl@plotstrue}
@@ -35,7 +42,7 @@
 \RequirePackage{graphicx}
 \RequirePackage{float}
 \RequirePackage{multicol}
-\RequirePackage{xcolor}
+\RequirePackage[table]{xcolor}
 
 %% ---------- Header / footer ----------
 \RequirePackage{fancyhdr}
@@ -81,9 +88,75 @@
 \titlespacing*{\section}{0pt}{1.6em}{0.8em}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
 
+%% ---------- Colour theme & semantic highlighting ----------
+%% Semantic commands are ALWAYS available; with [color] they are coloured, without it
+%% they print plain, so the same .tex works in colour and in black & white.
+%%   \important{text}      yellow highlighter (key statements / results the source stresses)
+%%   \definition{text}     orange highlighter (the defining sentence of a term)
+%%   \keyterm{term}        the term being defined (bold, dark orange)
+%%   formulabox  env       light-blue box for key formulas / standard results
+%%   defbox      env       orange left-bar box for a whole definition paragraph
+%%   keybox      env       yellow left-bar box for a rule / theorem / important note
+%%   answerbox   env       green box for a final answer / result
+%%   \TableHead            put first in a table's header row: tinted header
+%%   \clLabel{text}        coloured bold label (e.g. Solution:, Output:)
+%% Math inside \important/\definition must be braced: \important{area is {$\pi r^2$}}.
+\RequirePackage{soul}
+\RequirePackage[breakable,skins]{tcolorbox}
+\definecolor{clTitle}{HTML}{1D4ED8}
+\definecolor{clSec}{HTML}{1D4ED8}
+\definecolor{clSubsec}{HTML}{0F766E}
+\definecolor{clSubsub}{HTML}{7C3AED}
+\definecolor{clRule}{HTML}{93C5FD}
+\definecolor{clImp}{HTML}{FFF176}
+\definecolor{clDef}{HTML}{FFCC80}
+\definecolor{clKey}{HTML}{B45309}
+\definecolor{clFormulaBg}{HTML}{E0F2FE}\definecolor{clFormulaFr}{HTML}{0284C7}
+\definecolor{clDefBg}{HTML}{FFF3E0}\definecolor{clDefFr}{HTML}{F57C00}
+\definecolor{clKeyBg}{HTML}{FFFDE7}\definecolor{clKeyFr}{HTML}{F9A825}
+\definecolor{clAnsBg}{HTML}{E8F5E9}\definecolor{clAnsFr}{HTML}{2E7D32}
+\definecolor{clTableHead}{HTML}{DBEAFE}
+\definecolor{clLabelC}{HTML}{BE185D}
+\ifcl@color
+  \titleformat{\section}{\Large\bfseries\color{clSec}}{\thesection}{1em}{}[{\color{clRule}\titlerule[0.8pt]}]
+  \titleformat{\subsection}{\large\bfseries\color{clSubsec}}{\thesubsection}{1em}{}
+  \titleformat{\subsubsection}{\normalsize\bfseries\color{clSubsub}}{\thesubsubsection}{1em}{}
+  \renewcommand{\TitleBlock}[1]{%
+    \begingroup\centering\setlength{\parskip}{0pt}\color{clTitle}%
+    {\renewcommand{\baselinestretch}{1.45}\selectfont #1\par}%
+    \endgroup\vspace{0.4em}{\color{clRule}\hrule height 0.8pt}\vspace{1em}}
+  \newcommand{\important}[1]{{\sethlcolor{clImp}\hl{#1}}}
+  \newcommand{\definition}[1]{{\sethlcolor{clDef}\hl{#1}}}
+  \newcommand{\keyterm}[1]{\textbf{\color{clKey}#1}}
+  \soulregister{\keyterm}{1}   % allow \keyterm{...} inside \definition{...} / \important{...}
+  \newcommand{\TableHead}{\rowcolor{clTableHead}}
+  \newcommand{\clLabel}[1]{\textbf{\color{clLabelC}#1}}
+  \newcommand{\clTitleColor}{\color{clTitle}}
+  \newtcolorbox{formulabox}[1][]{colback=clFormulaBg,colframe=clFormulaFr,boxrule=0.6pt,arc=2pt,
+    left=6pt,right=6pt,top=3pt,bottom=3pt,breakable,#1}
+  \newtcolorbox{defbox}[1][]{enhanced,colback=clDefBg,colframe=clDefFr,boxrule=0pt,leftrule=3pt,
+    sharp corners,left=8pt,right=6pt,top=3pt,bottom=3pt,breakable,#1}
+  \newtcolorbox{keybox}[1][]{enhanced,colback=clKeyBg,colframe=clKeyFr,boxrule=0pt,leftrule=3pt,
+    sharp corners,left=8pt,right=6pt,top=3pt,bottom=3pt,breakable,#1}
+  \newtcolorbox{answerbox}[1][]{colback=clAnsBg,colframe=clAnsFr,boxrule=0.6pt,arc=2pt,
+    left=6pt,right=6pt,top=3pt,bottom=3pt,breakable,#1}
+\else
+  \newcommand{\important}[1]{#1}
+  \newcommand{\definition}[1]{#1}
+  \newcommand{\keyterm}[1]{#1}
+  \newcommand{\TableHead}{}
+  \newcommand{\clLabel}[1]{\textbf{#1}}
+  \newcommand{\clTitleColor}{\relax}
+  \newenvironment{formulabox}[1][]{}{}
+  \newenvironment{defbox}[1][]{}{}
+  \newenvironment{keybox}[1][]{}{}
+  \newenvironment{answerbox}[1][]{}{}
+\fi
+
 %% ---------- Code ----------
 \ifcl@code
   \RequirePackage{listings}
+  \lstloadaspects{directives}   % defines directivestyle (colouring of #include / #define)
   \lstdefinestyle{srccode}{%
     basicstyle=\ttfamily\small,
     columns=fullflexible, keepspaces=true, showstringspaces=false,
@@ -97,6 +170,38 @@
     aboveskip=0.6em, belowskip=0.8em}
   \lstset{style=srccode}
   \RequirePackage{upquote}
+  %% Pseudocode: no frame, bold control keywords, indentation preserved, plain ink
+  \lstdefinelanguage{pseudo}{%
+    morekeywords={IF,THEN,ELSE,ELSEIF,ENDIF,END,WHILE,DO,ENDWHILE,FOR,TO,DOWNTO,STEP,ENDFOR,
+      REPEAT,UNTIL,RETURN,PROCEDURE,FUNCTION,BEGIN,CALL,READ,PRINT,INPUT,OUTPUT,ARRAY,SWAP,
+      AND,OR,NOT,START,STOP},
+    sensitive=true}
+  \lstdefinestyle{pseudocode}{language=pseudo,style=srccode,frame=none,
+    basicstyle=\rmfamily,keywordstyle=\bfseries,columns=fullflexible,xleftmargin=1.5em,
+    backgroundcolor={}}
+  \ifcl@codecolor
+    %% editor-like palette tuned for white paper (optional extra)
+    \definecolor{clKeyword}{HTML}{8839EF}\definecolor{clType}{HTML}{0B7A75}
+    \definecolor{clString}{HTML}{2E7D32}
+    \definecolor{clComment}{HTML}{6B7280}\definecolor{clPreproc}{HTML}{C026D3}
+    \lstdefinestyle{srccode}{%
+      basicstyle=\ttfamily\small,
+      columns=fullflexible, keepspaces=true, showstringspaces=false,
+      tabsize=4, breaklines=true, upquote=true, frame=single, framerule=0.4pt,
+      xleftmargin=0.5em, xrightmargin=0.5em, aboveskip=0.8em, belowskip=0.8em,
+      keywordstyle=\color{clKeyword}\bfseries,
+      keywordstyle=[2]\color{clType}\bfseries,
+      morekeywords=[2]{int,char,float,double,long,short,unsigned,signed,void,struct,FILE},
+      commentstyle=\color{clComment}\itshape, stringstyle=\color{clString},
+      directivestyle=\color{clPreproc},
+      backgroundcolor=\color{gray!4}, rulecolor=\color{clRule}}
+    \lstdefinestyle{srcoutput}{%
+      basicstyle=\ttfamily\small, columns=fullflexible, keepspaces=true,
+      showstringspaces=false, breaklines=true, frame=tb, framerule=0.4pt,
+      aboveskip=0.6em, belowskip=0.8em,
+      backgroundcolor=\color{clAnsBg}, rulecolor=\color{clAnsFr}}
+    \lstset{style=srccode}
+  \fi
 \fi
 
 %% ---------- Diagrams ----------
@@ -115,8 +220,18 @@
     fc/process/.style={rectangle,draw,minimum height=2.2em,minimum width=6em,align=center},
     fc/decision/.style={diamond,draw,aspect=2.2,inner sep=1pt,minimum width=3.4cm,minimum height=1.5cm,align=center},
     fc/io/.style={trapezium,trapezium left angle=70,trapezium right angle=110,draw,minimum height=2.2em,align=center},
-    fc/arrow/.style={-{Stealth[length=2.2mm]}}
+    fc/arrow/.style={-{Stealth[length=2.2mm]}},
+    fc/connector/.style={circle,draw,minimum size=9mm,inner sep=0pt}
   }
+  \ifcl@color   % filled shapes, one colour per shape type
+    \tikzset{
+      fc/terminal/.append style={fill=green!12,draw=green!45!black},
+      fc/io/.append style={fill=blue!8,draw=blue!55!black},
+      fc/process/.append style={fill=yellow!18,draw=orange!70!black},
+      fc/decision/.append style={fill=orange!14,draw=red!55!black},
+      fc/connector/.append style={fill=violet!10,draw=violet!60!black}
+    }
+  \fi
 \fi
 \ifcl@chem
   \RequirePackage[version=4]{mhchem}
