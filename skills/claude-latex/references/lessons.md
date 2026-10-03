@@ -10,6 +10,24 @@ documents. Record only the general, reusable lesson.
 
 ## Active lessons
 
+### L9 [active] Confirm every edit really applied (and rebuild succeeded) before sending the PDF
+- **area:** workflow
+- **trigger:** self
+- **why:** A scripted text replace failed on an assert, and the unchanged PDF was sent as if it were fixed.
+- **apply:** After each fix, check the edit output, rebuild, grep the PDF text for the changed string, then send.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
+### L10 [active] Do text edits to .tex with the Edit tool or a saved script using raw strings; never sed or inline python with backslashes
+- **area:** build
+- **trigger:** self
+- **why:** sed turned usetikzlibrary into Setikzlibrary and inline python raised unicode-escape errors on LaTeX backslashes.
+- **apply:** Use Edit for single changes; for bulk changes Write a .py file with r-strings and run it.
+- **seen:** 1
+- **first:** 2026-10-03
+- **last:** 2026-10-03
+
 ### L11 [active] Render sources into a short relative folder in the working directory; pymupdf cannot save to Windows 8.3 short temp paths
 - **area:** workflow
 - **trigger:** self
@@ -42,15 +60,6 @@ documents. Record only the general, reusable lesson.
 - **trigger:** self
 - **why:** User asked for the PDF in a Desktop folder; later edits had to be copied over again.
 - **apply:** After the last rebuild, copy the PDF and the tex files to the folder and list it to confirm.
-- **seen:** 1
-- **first:** 2026-10-03
-- **last:** 2026-10-03
-
-### L15 [active] Use the colour theme by default: coloured titles, yellow for important points, orange for definitions
-- **area:** layout
-- **trigger:** correction
-- **why:** User asked for colourful LaTeX output instead of black and white, applied to all templates
-- **apply:** Load claudelatex with [color]; mark definitions/important/formulas/answers per references/color-theme.md; drop it only when the user asks for black and white
 - **seen:** 1
 - **first:** 2026-10-03
 - **last:** 2026-10-03
@@ -146,22 +155,12 @@ documents. Record only the general, reusable lesson.
 - **last:** 2026-10-03
 - **promoted_to:** references/checklist.md
 
-### L9 [promoted] Confirm every edit really applied (and rebuild succeeded) before sending the PDF
-- **area:** workflow
-- **trigger:** self
-- **why:** A scripted text replace failed on an assert, and the unchanged PDF was sent as if it were fixed.
-- **apply:** After each fix, check the edit output, rebuild, grep the PDF text for the changed string, then send.
+### L15 [promoted] Use the colour theme by default: coloured titles, yellow for important points, orange for definitions
+- **area:** layout
+- **trigger:** correction
+- **why:** User asked for colourful LaTeX output instead of black and white, applied to all templates
+- **apply:** Load claudelatex with [color]; mark definitions/important/formulas/answers per references/color-theme.md; drop it only when the user asks for black and white
 - **seen:** 1
 - **first:** 2026-10-03
 - **last:** 2026-10-03
 - **promoted_to:** references/color-theme.md
-
-### L10 [promoted] Do text edits to .tex with the Edit tool or a saved script using raw strings; never sed or inline python with backslashes
-- **area:** build
-- **trigger:** self
-- **why:** sed turned usetikzlibrary into Setikzlibrary and inline python raised unicode-escape errors on LaTeX backslashes.
-- **apply:** Use Edit for single changes; for bulk changes Write a .py file with r-strings and run it.
-- **seen:** 1
-- **first:** 2026-10-03
-- **last:** 2026-10-03
-- **promoted_to:** references/optional-extras.md
